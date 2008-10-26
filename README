@@ -1,0 +1,3 @@
+MDCave is a game written in JavaScript. Display is done using the canvas tag (which is currently only supported in Safari and Firefox). The game was originally developed in one night, but there have been a few minor updates since.
+
+This game is based on a java applet called necroCave (http://www.sfcave.com/necroCave.php) that I used to play during class in high school.
