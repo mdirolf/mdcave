@@ -4,226 +4,226 @@
     "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
-	<head>
-		<title>MDCave</title>
-		<script src="jquery-1.2.6.min.js" type="text/javascript" charset="utf-8"></script>
-		<script type="application/x-javascript">
-		var res = 100;
-		var min_width = 2 * res / 10;
-		var acc = 0.1;
+    <head>
+        <title>MDCave</title>
+        <script src="jquery-1.2.6.min.js" type="text/javascript" charset="utf-8"></script>
+        <script type="application/x-javascript">
+        var res = 100;
+        var min_width = 2 * res / 10;
+        var acc = 0.1;
 
-		//initialize the array of top and bottom values
-		var top;
-		var bottom;
-		var positions;
-		var blockers;
+        //initialize the array of top and bottom values
+        var top;
+        var bottom;
+        var positions;
+        var blockers;
 
-		//have we played yet?
-		var played = false;
-		//are we done?
-		var finished;
+        //have we played yet?
+        var played = false;
+        //are we done?
+        var finished;
 
-		var last_top;
-		var last_width;
+        var last_top;
+        var last_width;
 
-		var score;
-		var last_pos;
+        var score;
+        var last_pos;
 
-		var key;
+        var key;
 
-		var velocity;
+        var velocity;
 
-		function keydown(e) {
-			if(finished && !key && e.which == 32) { //space
+        function keydown(e) {
+            if(finished && !key && e.which == 32) { //space
                 init();
-			}
-			key++;
-		}
+            }
+            key++;
+        }
 
-		function keyup() {
-			//key--;
-			//key = (key < 0) ? 0 : key;
-			key = 0;
-		}
+        function keyup() {
+            //key--;
+            //key = (key < 0) ? 0 : key;
+            key = 0;
+        }
 
-		function step() {
-			score++;
+        function step() {
+            score++;
 
-			var new_width = (score % 33 == 0) ? last_width - 1 : last_width;
-			new_width = (new_width < min_width) ? min_width : new_width;
-			last_top = (new_width < last_width) ? last_top + 0.5 : last_top;
+            var new_width = (score % 33 == 0) ? last_width - 1 : last_width;
+            new_width = (new_width < min_width) ? min_width : new_width;
+            last_top = (new_width < last_width) ? last_top + 0.5 : last_top;
 
-			var rand = Math.random();
-			var new_top = (rand > 0.666) ? last_top + 1 : last_top;
-			new_top = (rand < 0.333) ? new_top - 1 : new_top;
-			new_top = (new_top < 1) ? 1 : new_top;
-			new_top = (new_top + new_width > res - 1) ? res - new_width - 1 : new_top;
+            var rand = Math.random();
+            var new_top = (rand > 0.666) ? last_top + 1 : last_top;
+            new_top = (rand < 0.333) ? new_top - 1 : new_top;
+            new_top = (new_top < 1) ? 1 : new_top;
+            new_top = (new_top + new_width > res - 1) ? res - new_width - 1 : new_top;
 
-			last_top = new_top;
-			last_width = new_width;
+            last_top = new_top;
+            last_width = new_width;
 
-			top.shift();
-			top.push(new_top);
-			bottom.shift();
-			bottom.push(new_top + new_width);
+            top.shift();
+            top.push(new_top);
+            bottom.shift();
+            bottom.push(new_top + new_width);
 
-			if(key > 0) {
-				velocity = velocity - acc;
-				//positions.push(last_pos--);
-			}
-			else {
-				velocity = velocity + acc;
-				//positions.push(last_pos++);
-			}
-			last_pos = last_pos + velocity;
-			positions.push(last_pos);
-			positions.shift();
+            if(key > 0) {
+                velocity = velocity - acc;
+                //positions.push(last_pos--);
+            }
+            else {
+                velocity = velocity + acc;
+                //positions.push(last_pos++);
+            }
+            last_pos = last_pos + velocity;
+            positions.push(last_pos);
+            positions.shift();
 
-			//check walls
-			if(positions[res / 5 - 1] < top[res / 5 - 1] || positions[res / 5 - 1] > bottom[res / 5 - 1]) {
-				done();
-				return;
-			}
+            //check walls
+            if(positions[res / 5 - 1] < top[res / 5 - 1] || positions[res / 5 - 1] > bottom[res / 5 - 1]) {
+                done();
+                return;
+            }
 
-			//check blockers
-			for(var i = 0; i < blockers.length; i++) {
-				var cur = positions[res / 5 - 1];
-				if (res - score + blockers[i].score == 19) {
-					if (cur > blockers[i].pos && cur < blockers[i].pos + res / 10) {
-						done();
-						return;
-					}
-				}
-			}
+            //check blockers
+            for(var i = 0; i < blockers.length; i++) {
+                var cur = positions[res / 5 - 1];
+                if (res - score + blockers[i].score == 19) {
+                    if (cur > blockers[i].pos && cur < blockers[i].pos + res / 10) {
+                        done();
+                        return;
+                    }
+                }
+            }
 
-			//add blocker
-			if(score % (res / 2) == 0) {
-				var blocker = {};
-				blocker.score = score;
-				blocker.pos = Math.random() * (last_width - res / 10) + last_top;
-				blockers.push(blocker);
-				if(blockers.length > 2)
-					blockers.shift();
-			}
+            //add blocker
+            if(score % (res / 2) == 0) {
+                var blocker = {};
+                blocker.score = score;
+                blocker.pos = Math.random() * (last_width - res / 10) + last_top;
+                blockers.push(blocker);
+                if(blockers.length > 2)
+                    blockers.shift();
+            }
 
-			setTimeout('step()', 30);
-			draw();
-		}
+            setTimeout('step()', 30);
+            draw();
+        }
 
-		function done() {
-			finished = true;
-			drawFailure();
-			$("#score").html(score);
-			$("#gameover").show();
-		}
+        function done() {
+            finished = true;
+            drawFailure();
+            $("#score").html(score);
+            $("#gameover").show();
+        }
 
-		function drawFailure() {
-			var canvas = $("#canvas").get()[0];
-			var ctx = canvas.getContext("2d");
-			ctx.fillStyle = 'red';
-			ctx.strokeStyle = 'black';
-			draw();
-		}
+        function drawFailure() {
+            var canvas = $("#canvas").get()[0];
+            var ctx = canvas.getContext("2d");
+            ctx.fillStyle = 'red';
+            ctx.strokeStyle = 'black';
+            draw();
+        }
 
-		function draw() {
-			var canvas = $("#canvas").get()[0];
-			var ctx = canvas.getContext("2d");
-			ctx.clearRect(0, 0, res, res);
+        function draw() {
+            var canvas = $("#canvas").get()[0];
+            var ctx = canvas.getContext("2d");
+            ctx.clearRect(0, 0, res, res);
 
-			//draw top
-			ctx.beginPath();
-			ctx.moveTo(0, 0);
-			for(var i = 0; i < res; i++) {
-				ctx.lineTo(i, top[i]);
-			}
-			ctx.lineTo(res - 1, 0);
-			ctx.fill();
+            //draw top
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            for(var i = 0; i < res; i++) {
+                ctx.lineTo(i, top[i]);
+            }
+            ctx.lineTo(res - 1, 0);
+            ctx.fill();
 
-			//draw bottom
-			ctx.beginPath();
-			ctx.moveTo(0, res);
-			for(var i = 0; i < res; i++) {
-				ctx.lineTo(i,bottom[i]);
-			}
-			ctx.lineTo(res - 1, res);
-			ctx.fill();
+            //draw bottom
+            ctx.beginPath();
+            ctx.moveTo(0, res);
+            for(var i = 0; i < res; i++) {
+                ctx.lineTo(i,bottom[i]);
+            }
+            ctx.lineTo(res - 1, res);
+            ctx.fill();
 
-			//draw blockers
-			for(var i = 0; i < blockers.length; i++) {
-				ctx.fillRect(res - score + blockers[i].score, blockers[i].pos, 1, res / 10);
-			}
+            //draw blockers
+            for(var i = 0; i < blockers.length; i++) {
+                ctx.fillRect(res - score + blockers[i].score, blockers[i].pos, 1, res / 10);
+            }
 
-			//draw snake
-			ctx.beginPath();
-			ctx.moveTo(0, positions[0]);
-			for(var i = 1; i < res / 5; i++) {
-				ctx.lineTo(i,positions[i]);
-			}
-			ctx.stroke();
-		}
+            //draw snake
+            ctx.beginPath();
+            ctx.moveTo(0, positions[0]);
+            for(var i = 1; i < res / 5; i++) {
+                ctx.lineTo(i,positions[i]);
+            }
+            ctx.stroke();
+        }
 
-		function init() {
-		    $("#gameover").hide();
+        function init() {
+            $("#gameover").hide();
 
-			finished = false;
+            finished = false;
 
-			top = new Array();
-			bottom = new Array();
-			positions = new Array();
-			blockers = new Array();
+            top = new Array();
+            bottom = new Array();
+            positions = new Array();
+            blockers = new Array();
 
 
-			for(var i = 0; i < res; i++) {
-				if(i < res / 5) {
-					positions.push(res / 2);
-				}
-				top.push(res / 10);
-				bottom.push(9 * res / 10);
-			}
+            for(var i = 0; i < res; i++) {
+                if(i < res / 5) {
+                    positions.push(res / 2);
+                }
+                top.push(res / 10);
+                bottom.push(9 * res / 10);
+            }
 
-			last_top = res / 10;
-			last_width = 8 * res / 10;
+            last_top = res / 10;
+            last_width = 8 * res / 10;
 
-			score = 0;
-			last_pos = res / 2;
+            score = 0;
+            last_pos = res / 2;
 
-			key = 0;
-			velocity = 0;
+            key = 0;
+            velocity = 0;
 
-			var canvas = $("#canvas").get()[0];
-			if(!canvas.getContext) {
-				alert("This won't work on IE, try Firefox!!");
-				return;
-			}
-			var ctx = canvas.getContext("2d");
-			ctx.strokeStyle = 'orange';
-			ctx.fillStyle = 'black';
-			ctx.lineJoin = 'round';
-			ctx.lineCap = 'round';
+            var canvas = $("#canvas").get()[0];
+            if(!canvas.getContext) {
+                alert("This won't work on IE, try Firefox!!");
+                return;
+            }
+            var ctx = canvas.getContext("2d");
+            ctx.strokeStyle = 'orange';
+            ctx.fillStyle = 'black';
+            ctx.lineJoin = 'round';
+            ctx.lineCap = 'round';
 
-			if(!played) {
-				ctx.scale(canvas.width / res, canvas.height / res);
-				played = true;
-			}
+            if(!played) {
+                ctx.scale(canvas.width / res, canvas.height / res);
+                played = true;
+            }
 
-			//draw the initial scene
-			draw();
+            //draw the initial scene
+            draw();
 
-			$(document).keydown(keydown);
+            $(document).keydown(keydown);
             $(document).keyup(keyup);
 
-			setTimeout('step()', 30);
-		}
-		$(document).ready(init)
-		</script>
-	</head>
-	<body>
-		<canvas id="canvas" width="800" height="600"></canvas>
-		<div id="gameover" style="width:800px;position:absolute;top:150px;text-align:center;color:midnightblue;">
-		    <div id="score" style="font-size:300px"></div>
-		    <br />
-		    <div style="font-size:40px;">Press Spacebar to Restart</div>
+            setTimeout('step()', 30);
+        }
+        $(document).ready(init)
+        </script>
+    </head>
+    <body>
+        <canvas id="canvas" width="800" height="600"></canvas>
+        <div id="gameover" style="width:800px;position:absolute;top:150px;text-align:center;color:midnightblue;">
+            <div id="score" style="font-size:300px"></div>
+            <br />
+            <div style="font-size:40px;">Press Spacebar to Restart</div>
         </div>
-		<div id="MD-Footer">Copyright &copy; 2007 <a href="http://www.dirolf.com">Michael Dirolf</a> - All Rights Reserved</div>
+        <div id="MD-Footer">Copyright &copy; 2007 <a href="http://www.dirolf.com">Michael Dirolf</a> - All Rights Reserved</div>
     </body>
 </html>
