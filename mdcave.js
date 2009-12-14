@@ -23,6 +23,9 @@ var key;
 
 var velocity;
 
+var canvas;
+var ctx;
+
 function keydown (e) {
     if (e.which == 32) { // space
         if (finished && !key) {
@@ -114,16 +117,12 @@ function done() {
 }
 
 function drawFailure() {
-    var canvas = $("#canvas").get()[0];
-    var ctx = canvas.getContext("2d");
     ctx.fillStyle = 'red';
     ctx.strokeStyle = 'black';
     draw();
 }
 
 function draw() {
-    var canvas = $("#canvas").get()[0];
-    var ctx = canvas.getContext("2d");
     ctx.clearRect(0, 0, res, res);
 
     //draw top
@@ -186,12 +185,15 @@ function init() {
     key = false;
     velocity = 0;
 
-    var canvas = $("#canvas").get()[0];
+    // Make sure our dimensions are right
+    $("#MD-Canvas").height($("#MD-Canvas").width() * 3 / 4);
+
+    canvas = $("#MD-Canvas").get()[0];
     if(!canvas.getContext) {
-        alert("This won't work on IE, try Firefox!!");
+        console.log("Could not get context");
         return;
     }
-    var ctx = canvas.getContext("2d");
+    ctx = canvas.getContext("2d");
     ctx.strokeStyle = 'orange';
     ctx.fillStyle = 'black';
     ctx.lineJoin = 'round';
