@@ -111,15 +111,10 @@ function step() {
 
 function done() {
     finished = true;
-    drawFailure();
+    draw();
+
     $("#MD-Score").html(score);
     $("#MD-GameOver").show();
-}
-
-function drawFailure() {
-    ctx.fillStyle = 'red';
-    ctx.strokeStyle = 'black';
-    draw();
 }
 
 function draw() {
