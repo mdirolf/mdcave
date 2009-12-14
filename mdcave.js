@@ -112,8 +112,8 @@ function step() {
 function done() {
     finished = true;
     drawFailure();
-    $("#score").html(score);
-    $("#gameover").show();
+    $("#MD-Score").html(score);
+    $("#MD-GameOver").show();
 }
 
 function drawFailure() {
@@ -158,7 +158,7 @@ function draw() {
 }
 
 function init() {
-    $("#gameover").hide();
+    $("#MD-GameOver").hide();
 
     finished = false;
 
