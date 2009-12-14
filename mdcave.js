@@ -37,6 +37,13 @@ function keydown (e) {
     return true;
 }
 
+function keypress (e) {
+    if (e.which == 32) {
+        return false;
+    }
+    return true;
+}
+
 function keyup (e) {
     if (e.which == 32) { // space
         key = false;
@@ -207,6 +214,7 @@ function init() {
     draw();
 
     $(document).keydown(keydown);
+    $(document).keypress(keypress);
     $(document).keyup(keyup);
 
     setTimeout('step()', 30);
