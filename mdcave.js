@@ -125,6 +125,10 @@ function drawFailure() {
 function draw() {
     ctx.clearRect(0, 0, res, res);
 
+    if (score % 100 == 0) {
+        $("#MD-Score").html(score);
+    }
+
     //draw top
     ctx.beginPath();
     ctx.moveTo(0, 0);
@@ -159,6 +163,7 @@ function draw() {
 
 function init() {
     $("#MD-GameOver").hide();
+    $("#MD-Score").html(0);
 
     finished = false;
 
@@ -166,7 +171,6 @@ function init() {
     bottom = new Array();
     positions = new Array();
     blockers = new Array();
-
 
     for(var i = 0; i < res; i++) {
         if(i < res / 5) {
