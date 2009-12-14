@@ -23,17 +23,23 @@ var key;
 
 var velocity;
 
-function keydown(e) {
-    if(finished && !key && e.which == 32) { //space
-        init();
+function keydown (e) {
+    if (e.which == 32) { // space
+        if (finished && !key) {
+            init();
+        }
+        key = true;
+        return false;
     }
-    key++;
+    return true;
 }
 
-function keyup() {
-    //key--;
-    //key = (key < 0) ? 0 : key;
-    key = 0;
+function keyup (e) {
+    if (e.which == 32) { // space
+        key = false;
+        return false;
+    }
+    return true;
 }
 
 function step() {
@@ -57,7 +63,7 @@ function step() {
     bottom.shift();
     bottom.push(new_top + new_width);
 
-    if(key > 0) {
+    if(key) {
         velocity = velocity - acc;
         //positions.push(last_pos--);
     }
@@ -177,7 +183,7 @@ function init() {
     score = 0;
     last_pos = res / 2;
 
-    key = 0;
+    key = false;
     velocity = 0;
 
     var canvas = $("#canvas").get()[0];
