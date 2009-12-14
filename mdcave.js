@@ -132,21 +132,21 @@ function draw() {
     //draw bottom
     ctx.beginPath();
     ctx.moveTo(0, res);
-    for(var i = 0; i < res; i++) {
+    for(i = 0; i < res; i++) {
         ctx.lineTo(i,bottom[i]);
     }
     ctx.lineTo(res - 1, res);
     ctx.fill();
 
     //draw blockers
-    for(var i = 0; i < blockers.length; i++) {
+    for(i = 0; i < blockers.length; i++) {
         ctx.fillRect(res - score + blockers[i].score, blockers[i].pos, 1, res / 10);
     }
 
     //draw snake
     ctx.beginPath();
     ctx.moveTo(0, positions[0]);
-    for(var i = 1; i < res / 5; i++) {
+    for(i = 1; i < res / 5; i++) {
         ctx.lineTo(i,positions[i]);
     }
     ctx.stroke();
@@ -204,4 +204,4 @@ function init() {
 
     setTimeout('step()', 30);
 }
-$(document).ready(init)
+$(document).ready(init);
